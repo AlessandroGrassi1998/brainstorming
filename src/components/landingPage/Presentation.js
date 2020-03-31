@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, Typography, Grid, TextField, CardMedia, Box } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import openLoginModal from '../../actions/openLoginModal';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,14 +27,16 @@ const useStyles = makeStyles(theme => ({
     mainBox: {
         background: 'linear-gradient(135deg, #0079bf, #5067c5)'
     },
-    emailTextField:{
-        background:grey[100],
+    emailTextField: {
+        background: grey[100],
         borderRadius: 4,
     }
 }));
 
+const handleEmailChange = (e, setEmail) => { setEmail(e.target.value); }
 
-const Presentation = () => {
+const Presentation = (props) => {
+    const [email, setEmail] = useState("");
     const classes = useStyles();
     return (
         <Box pt={10} pb={10} className={classes.mainBox}>
@@ -55,10 +60,10 @@ const Presentation = () => {
                     </Grid>
                     <Grid container spacing={1} item xs={12}>
                         <Grid item xs={12} md={4}>
-                            <TextField className={classes.emailTextField} fullWidth id="outlined-basic" label="Email" variant="outlined" />
+                            <TextField value={email} onChange={(e) => handleEmailChange(e, setEmail)} className={classes.emailTextField} fullWidth id="outlined-basic" label="Email" variant="outlined" />
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <Button fullWidth variant="contained" color="secondary" className={classes.subscribeButtom}>Registrati - è gratis.</Button>
+                            <Button fullWidth onClick={() => props.openLoginModal(true, email)} variant="contained" color="secondary" className={classes.subscribeButtom}>Registrati - è gratis.</Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -68,4 +73,10 @@ const Presentation = () => {
     );
 }
 
-export default Presentation;
+function mapDispatchToProps(dispatcher) {
+    return bindActionCreators({
+        openLoginModal: openLoginModal,
+    }, dispatcher)
+}
+
+export default connect(null, mapDispatchToProps)(Presentation);
