@@ -22,6 +22,11 @@ const useStyles = makeStyles(theme => ({
     carousel: {
         height: "100%",
         width: "100%",
+        borderRadius: 100,
+    },
+    carouselCaption: {
+        backgroundColor: "rgba(111, 126, 148, 0.2);",
+        borderRadius: 16,
     }
 }));
 
@@ -29,13 +34,13 @@ const useStyles = makeStyles(theme => ({
 const DemoSlider = () => {
     const classes = useStyles();
     const nextIcon = (
-        <IconButton  color="primary" aria-label="upload picture" component="span">
+        <IconButton color="primary" aria-label="upload picture" component="span">
             <MdNavigateNext size={60} />
-        </IconButton> );
+        </IconButton>);
     const prevIcon = (
         <IconButton color="primary" aria-label="upload picture" component="span">
             <MdNavigateBefore size={60} />
-        </IconButton> );
+        </IconButton>);
     return (
         <Box pt={25} mb={10}>
             <Grid container>
@@ -49,8 +54,10 @@ const DemoSlider = () => {
                                 alt="First slide"
                             />
                             <Carousel.Caption>
-                                <Typography className={classes.h3Caption} variant="h3">Visualizza comodamente tutti i tuoi progetti</Typography>
-                                <Typography className={classes.pCaption} variant="h6">Puoi crearne quanti ne vuoi e ognuno di essi è personalizzabile</Typography>
+                                <Box className={classes.carouselCaption} >
+                                    <Typography className={classes.h3Caption} variant="h3">Visualizza comodamente tutti i tuoi progetti</Typography>
+                                    <Typography className={classes.pCaption} variant="h6">Puoi crearne quanti ne vuoi e ognuno di essi è personalizzabile</Typography>
+                                </Box>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item>
@@ -59,10 +66,11 @@ const DemoSlider = () => {
                                 src={participantsList}
                                 alt="Third slide"
                             />
-
                             <Carousel.Caption>
-                                <Typography className={classes.h3Caption} variant="h3">Visualizza comodamente tutti i tuoi progetti</Typography>
-                                <Typography className={classes.pCaption} variant="h6">Puoi crearne quanti ne vuoi e ognuno di essi è personalizzabile</Typography>
+                                <Box className={classes.carouselCaption}>
+                                    <Typography className={classes.h3Caption} variant="h3">Visualizza comodamente tutti i tuoi progetti</Typography>
+                                    <Typography className={classes.pCaption} variant="h6">Puoi crearne quanti ne vuoi e ognuno di essi è personalizzabile</Typography>
+                                </Box>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item>
@@ -71,10 +79,11 @@ const DemoSlider = () => {
                                 src={previousSessions}
                                 alt="Third slide"
                             />
-
                             <Carousel.Caption>
-                                <Typography className={classes.h3Caption} variant="h3">Visualizza comodamente tutti i tuoi progetti</Typography>
-                                <Typography className={classes.pCaption} variant="h6">Puoi crearne quanti ne vuoi e ognuno di essi è personalizzabile</Typography>
+                                <Box className={classes.carouselCaption}>
+                                    <Typography className={classes.h3Caption} variant="h3">Visualizza comodamente tutti i tuoi progetti</Typography>
+                                    <Typography className={classes.pCaption} variant="h6">Puoi crearne quanti ne vuoi e ognuno di essi è personalizzabile</Typography>
+                                </Box>
                             </Carousel.Caption>
                         </Carousel.Item>
                     </Carousel>

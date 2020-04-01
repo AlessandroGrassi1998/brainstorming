@@ -1,9 +1,8 @@
-export default (openClose,email)=>{
+export default (openClose)=>{
     return{
         type: "Open close login modal",
         payload: {
-            openClose,
-            email,
+            openClose
         }
     }
 }

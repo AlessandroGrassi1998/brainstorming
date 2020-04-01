@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Button, Toolbar, Typography, Icon } from '@material-ui/core';
+import { AppBar, Button, Toolbar, Typography, Icon, Box } from '@material-ui/core';
 import { yellow } from '@material-ui/core/colors'
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import openLoginModal from '../actions/openLoginModal';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,39 +20,42 @@ const useStyles = makeStyles(theme => ({
     lightbulbIcon: {
         color: yellow[500]
     },
+    link:{
+        '&:hover':{
+            cursor: "pointer",
+        }
+    },
 }));
 
-function setOnScrollListener(setOnTop) {
-    console.log("setOnScrollListener");
-    window.onscroll = function () {
-        if (window.pageYOffset === 0) {
-            setOnTop(false)
-            console.log("ON TOP")
-        } else {
-            setOnTop(false)
-            console.log("Not on top")
-        }
-    };
-}
-
 const NavBar = (props) => {
-    const [isOnTop, setOnTop] = useState(true);
-    //useEffect(() => setOnScrollListener(setOnTop), []);
     const classes = useStyles();
-    let background = !isOnTop ? "transparent" : ""
+    const history = useHistory();
+    const bringBackToLandingPage = () => { history.push("/") };
 
     return (
         <div className={classes.root}>
-            <AppBar style={{ background: `${background}`}} position="static">
+            <AppBar position="static">
                 <Toolbar>
-                    <Icon>lightbulb</Icon>
-                    <Typography variant="h6" className={classes.title}>Trello</Typography>
-                    <Button className={classes.menuButton} color="inherit">Log in</Button>
-                    <Button className={classes.menuButton} color="inherit">Sign up</Button>
+                    <Box display="flex" justifyContent="space-between" flexGrow={1}>
+                        <Box className={classes.link} onClick={bringBackToLandingPage} display="flex" justifyContent="space-between">
+                            <Icon>lightbulb</Icon>
+                            <Typography variant="h6" >Trello</Typography>
+                        </Box>
+                        <Box>
+                            <Button onClick={() => props.openLoginModal(true)} className={classes.menuButton} color="inherit">Log in</Button>
+                            <Button className={classes.menuButton} color="inherit">Sign up</Button>
+                        </Box>
+                    </Box>
                 </Toolbar>
             </AppBar>
         </div>
     );
 }
 
-export default NavBar;
+function mapDispatchToProps(dispatcher) {
+    return bindActionCreators({
+        openLoginModal: openLoginModal,
+    }, dispatcher)
+}
+
+export default connect(null, mapDispatchToProps)(NavBar);

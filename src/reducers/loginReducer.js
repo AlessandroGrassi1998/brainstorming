@@ -5,7 +5,6 @@ export default(state = initState, action)=>{
     if(actionType === "Open close login modal"){
         const newState = {}
         newState.openClose = action.payload.openClose;
-        newState.email = action.payload.email;
         return newState;
     }
     return state;
