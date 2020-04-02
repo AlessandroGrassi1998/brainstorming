@@ -1,8 +1,9 @@
 import React from 'react';
+import LeftSideNav from "./LeftSideNav";
 
 const Home = () => {
     return ( 
-        <h1>HOME</h1>
+        <LeftSideNav />
      );
 }
  
