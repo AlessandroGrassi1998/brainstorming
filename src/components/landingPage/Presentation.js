@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Typography, Grid, TextField, CardMedia, Box } from '@material-ui/core';
+import { Button, Typography, Grid, TextField, CardMedia, Box, Container } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors'
 
 const useStyles = makeStyles(theme => ({
@@ -11,10 +11,38 @@ const useStyles = makeStyles(theme => ({
         color: grey[100],
         fontWeight: "bold",
         textAlign: "left",
-        fontFamily: '"Segoe UI"'
+        fontFamily: '"Segoe UI"',
+        [theme.breakpoints.only('md')]: {
+            width: 450
+        },
+        [theme.breakpoints.only('sm')]: {
+            width: "100%"
+        },
+        [theme.breakpoints.only('xs')]: {
+            textAlign: "center",
+            width: "100%"
+        },
     },
     media: {
         height: 500,
+        [theme.breakpoints.only('lg')]: {
+            height: 400
+        },
+        [theme.breakpoints.only('md')]: {
+            height: 350
+        },
+        [theme.breakpoints.down('sm')]: {
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+            height: 400,
+        },
+        [theme.breakpoints.down('xs')]: {
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+            width: "100%",
+        },
     },
     subscribeButtom: {
         color: grey[100],
@@ -37,21 +65,20 @@ const Presentation = (props) => {
     const classes = useStyles();
     return (
         <Box pt={10} pb={10} className={classes.mainBox}>
-            <Grid container>
-                <Grid item xs={false} sm={2} />
-                <Grid container item xs={12} sm={8}>
-                    <Grid item xs={12} sm={6}>
-                        <Box mr={13}>
+            <Container>
+                <Grid container>
+                    <Grid item xs={12} md={6}>
+                        <Box mr={{ xs:0, sm:13}}>
                             <Typography variant="h3" className={classes.mainDesc}>Facilita il pensiero creativo, con "Trello" aumenti la produttività di idee e soluzioni.</Typography>
                             <Box mt={2}>
                                 <Typography variant="h5" className={classes.mainDesc}>"Trello" ti guida passo passo nel processo di sviluppo delle idee, grazie a numerosi template e linee guida mantieni sempre il focus su ciò che conta davvero.</Typography>
                             </Box>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <CardMedia
+                    <Grid item xs={12} md={6}>
+                        <img
                             className={classes.media}
-                            image="https://d2k1ftgv7pobq7.cloudfront.net/meta/p/res/images/308998dcb3ed5ab3d01217a4d24ffa03/hero-a.svg"
+                            src="https://d2k1ftgv7pobq7.cloudfront.net/meta/p/res/images/308998dcb3ed5ab3d01217a4d24ffa03/hero-a.svg"
                             title="trello image"
                         />
                     </Grid>
@@ -60,12 +87,11 @@ const Presentation = (props) => {
                             <TextField value={email} onChange={(e) => handleEmailChange(e, setEmail)} className={classes.emailTextField} fullWidth id="outlined-basic" label="Email" variant="outlined" />
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <Button fullWidth onClick={() => {}} variant="contained" color="secondary" className={classes.subscribeButtom}>Registrati - è gratis.</Button>
+                            <Button fullWidth onClick={() => { }} variant="contained" color="secondary" className={classes.subscribeButtom}>Registrati - è gratis.</Button>
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={false} sm={2} />
-            </Grid>
+            </Container>
         </Box>
     );
 }

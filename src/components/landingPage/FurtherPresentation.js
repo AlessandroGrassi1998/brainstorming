@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, Box, Card, CardContent } from '@material-ui/core';
+import { Grid, Typography, Box, Card, CardContent, Container } from '@material-ui/core';
 import { FaRocket, FaUsers, FaCubes } from 'react-icons/fa';
 
 const useStyles = makeStyles(theme => ({
@@ -24,10 +24,9 @@ const FurtherPresentation = (props) => {
     const classes = useStyles();
     return (
         <Box pt={15} className={classes.mainBox}>
-            <Grid container>
-                <Grid item xs={false} sm={2} />
-                <Grid container spacing={6} item xs={12} sm={8}>
-                    <Grid item xs={12} sm={4}>
+            <Container>
+                <Grid container spacing={6}>
+                    <Grid item xs={12} md={4}>
                         <Box mt={2}>
                             <Card>
                                 <CardContent>
@@ -37,7 +36,7 @@ const FurtherPresentation = (props) => {
                             </Card>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} md={4}>
                         <Box mt={2}>
                             <Card>
                                 <CardContent>
@@ -47,7 +46,7 @@ const FurtherPresentation = (props) => {
                             </Card>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item xs={12} md={4}>
                         <Box mt={2}>
                             <Card>
                                 <CardContent>
@@ -58,8 +57,7 @@ const FurtherPresentation = (props) => {
                         </Box>
                     </Grid>
                 </Grid>
-                <Grid item xs={false} sm={2} />
-            </Grid>
+            </Container>
         </Box>
     );
 }
