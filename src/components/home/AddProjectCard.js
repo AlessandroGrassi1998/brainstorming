@@ -1,36 +1,27 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardContent, CardMedia, Typography, Grid, CardActionArea } from '@material-ui/core';
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
     },
     projectMedia: {
-        height: 140,
+        height: 204,
     }
 }));
 
-const ProjectCard = (props) => {
+const ProjectCard = () => {
     const classes = useStyles();
-    const history = useHistory();
-    const handleClick = () => { history.push("/home/project") }
-    const { imgPath, imgTitle, projectTitle } = props;
     return (
         <Grid item xs={12} sm={6} lg={4}>
-            <Card className={classes.root} onClick={handleClick}>
+            <Card className={classes.root}>
                 <CardActionArea>
                     <CardMedia
                         className={classes.projectMedia}
-                        image={imgPath}
-                        title={imgTitle}
+                        image="https://www.muralswallpaper.com/app/uploads/pink-and-blue-cubes-design-plain-820x532.jpg"
+                        title="Live from space"
                     />
-                    <CardContent>
-                        <Typography component="h5" variant="h5">
-                            {projectTitle}
-                        </Typography>
-                    </CardContent>
                 </CardActionArea>
             </Card>
         </Grid>

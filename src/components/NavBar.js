@@ -5,8 +5,10 @@ import { grey } from '@material-ui/core/colors'
 import { connect } from 'react-redux';
 import { TiThMenu } from 'react-icons/ti';
 import { bindActionCreators } from 'redux';
-import openLoginModal from '../actions/openLoginModal';
 import { useHistory, useLocation } from "react-router-dom";
+
+import openLoginModal from '../actions/openLoginModal';
+import openDrawer from '../actions/opnenDrawer'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,11 +38,12 @@ const NavBar = (props) => {
     const history = useHistory();
     const location = useLocation()
     const bringBackToLandingPage = () => { history.push("/") };
+    const openDrawer = () => { props.openDrawer(true) }
 
     let menu = <></>;
     if (location.pathname !== "/") {
         menu =
-            <IconButton className={classes.menuButton} aria-label="upload picture" component="span">
+            <IconButton onClick={openDrawer} className={classes.menuButton} aria-label="upload picture" component="span">
                 <TiThMenu size="30" className={classes.icons} />
             </IconButton>
     }
@@ -70,6 +73,7 @@ const NavBar = (props) => {
 function mapDispatchToProps(dispatcher) {
     return bindActionCreators({
         openLoginModal: openLoginModal,
+        openDrawer: openDrawer,
     }, dispatcher)
 }
 
