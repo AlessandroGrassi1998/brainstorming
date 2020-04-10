@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Box, Card, CardActionArea, CardMedia, Fab, Dialog } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { IoIosAdd } from 'react-icons/io'
+import { GiFireworkRocket } from 'react-icons/gi'
 
 import AddParticipantModalContent from './AddParticipantModalContent'
 import ProjectTabs from './ProjectTabs'
 import TabPanelContainer from './TabPanelContainer'
+import StartSessionDialog from './StartSessionDialog';
 
 const useStyles = makeStyles((theme) => ({
     upperBox: {
@@ -23,7 +25,12 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "auto",
         marginRight: "auto",
     },
-    fab: {
+    fabSession: {
+        position: 'fixed',
+        bottom: "12%",
+        right: "5%",
+    },
+    fabParticipant: {
         position: 'fixed',
         bottom: "5%",
         right: "5%",
@@ -33,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
 const Project = () => {
     //https://www.wallpaperflare.com/static/848/580/995/mountains-minimalism-purple-white-wallpaper.jpg
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
+    const [isOpenAdd, setOpenAdd] = useState(false);
+    const [isOpenStart, setOpenStart] = useState(false);
 
     return (
         <Box>
@@ -51,12 +59,21 @@ const Project = () => {
             </Box>
             <TabPanelContainer />
 
-            <Fab className={classes.fab} onClick={() => setOpen(true)} color="primary" aria-label="add" variant="extended">
+            <Fab className={classes.fabSession} onClick={() => setOpenStart(true)} color="primary" aria-label="add" variant="extended">
+                <GiFireworkRocket size="25" />
+                Start session
+            </Fab>
+
+            <Fab className={classes.fabParticipant} onClick={() => setOpenAdd(true)} color="primary" aria-label="add" variant="extended">
                 <IoIosAdd size="30" />
                 Add participant
             </Fab>
-            <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-                <AddParticipantModalContent setOpen={setOpen} />
+            <Dialog open={isOpenAdd} onClose={() => setOpenAdd(false)} aria-labelledby="form-dialog-title">
+                <AddParticipantModalContent setOpen={setOpenAdd} />
+            </Dialog>
+
+            <Dialog open={isOpenStart} onClose={() => setOpenStart(false)} aria-labelledby="form-dialog-title">
+                <StartSessionDialog setOpen={setOpenAdd} />
             </Dialog>
         </Box >
     );

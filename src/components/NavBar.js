@@ -57,7 +57,7 @@ const NavBar = (props) => {
                     <Box display="flex" justifyContent="space-between" flexGrow={1}>
                         <Box className={classes.link} onClick={bringBackToLandingPage} display="flex" justifyContent="space-between">
                             <Icon>lightbulb</Icon>
-                            <Typography variant="h6" >Trello</Typography>
+                            <Typography variant="h6" >Rail note</Typography>
                         </Box>
                         <Box>
                             <Button onClick={() => props.openLoginModal(true)} className={classes.logButton} color="inherit">Log in</Button>

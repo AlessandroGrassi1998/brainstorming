@@ -69,9 +69,9 @@ const Presentation = (props) => {
                 <Grid container>
                     <Grid item xs={12} md={6}>
                         <Box mr={{ xs:0, sm:13}}>
-                            <Typography variant="h3" className={classes.mainDesc}>Facilita il pensiero creativo, con "Trello" aumenti la produttività di idee e soluzioni.</Typography>
+                            <Typography variant="h3" className={classes.mainDesc}>Facilita il pensiero creativo, con Rail note aumenti la produttività di idee e soluzioni.</Typography>
                             <Box mt={2}>
-                                <Typography variant="h5" className={classes.mainDesc}>"Trello" ti guida passo passo nel processo di sviluppo delle idee, grazie a numerosi template e linee guida mantieni sempre il focus su ciò che conta davvero.</Typography>
+                                <Typography variant="h5" className={classes.mainDesc}>Rail note ti guida passo passo nel processo di sviluppo delle idee, grazie a numerosi template e linee guida mantieni sempre il focus su ciò che conta davvero.</Typography>
                             </Box>
                         </Box>
                     </Grid>
