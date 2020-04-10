@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import withWidth from '@material-ui/core/withWidth';
 
-import changeTabPanel from '../../actions/changeTabPanel'
+import changeTabPanel from '../../../actions/changeTabPanel'
 
 const useStyles = makeStyles((theme) => ({
     tab: {

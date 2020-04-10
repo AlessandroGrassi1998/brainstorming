@@ -5,7 +5,7 @@ const theme = createMuiTheme({
     palette: {
         primary: { main: blue[500] },
         secondary: { main: green[500], dark: green[900] },
-        error: { main: red[500] }
+        warning: { main: red[500], dark: red[900] },
     },
     spacing: 8,
     

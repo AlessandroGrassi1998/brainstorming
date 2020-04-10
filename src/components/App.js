@@ -14,7 +14,6 @@ import Project from './project/Project'
 
 function App() {
   return (
-    <div>
       <Router>
         <Route path="/">
           <NavBar tmp="test" />
@@ -31,7 +30,6 @@ function App() {
           <Project />
         </Route>
       </Router>
-    </div>
   );
 }
 

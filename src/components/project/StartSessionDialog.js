@@ -141,9 +141,3 @@ const StartSessionDialog = () => {
 }
 
 export default StartSessionDialog;
-
-/*
-partecipanti
-calendario
-bacheca di fianco
-*/

@@ -8,7 +8,6 @@ const StarsRating = (props) => {
     rating = rating > 5 ? 5: rating;
     const integerRating = Math.floor(rating);
     const decimalRating = rating - integerRating;
-    console.log(`rating: ${rating} integer: ${integerRating} decimal: ${decimalRating} `);
     const stars = [];
     let i = 0;
     for (i = 0; i < integerRating; i++) {

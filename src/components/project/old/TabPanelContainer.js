@@ -3,7 +3,7 @@ import { Box, Typography, Container } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import changeTabPanel from '../../actions/changeTabPanel'
+import changeTabPanel from '../../../actions/changeTabPanel'
 import ParticipantTab from './ParticipantTab'
 import PreviousSessionsTab from './PreviousSessionsTab'
 

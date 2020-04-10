@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import MaterialTable from 'material-table'
 
-import StarRating from './StarsRating'
+import StarRating from '../StarsRating'
 
 const PreviousSessionsTab = () => {
     return ( 
