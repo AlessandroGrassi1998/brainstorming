@@ -9,9 +9,6 @@ import ParticipantBox from './ParticipantBox';
 import ProjectMainContent from './ProjectMainContent'
 
 const useStyles = makeStyles((theme) => ({
-    upperBox: {
-        background: "linear-gradient(0deg, #439dc4, #37bffa)"
-    },
     fabSession: {
         position: 'fixed',
         bottom: "12%",
@@ -37,23 +34,16 @@ const Project = (props) => {
 
     return (
         <Box display="flex" flexDirection="column" className={classes.outerBox}>
-            <Box display="flex" justifyContent="center" py={2} className={classes.upperBox} width="100%">
-                <Typography variant="h3" className={classes.projectTitle}>Space shutle</Typography>
-            </Box>
             <Box flexGrow={1}>
                 <Grid container className={classes.gridContainer}>
-                    <Grid item xs={10} >
+                    <Grid item xs={12} sm={10} >
                         <ProjectMainContent />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={0} sm={2}>
                         <ParticipantBox />
                     </Grid>
                 </Grid>
             </Box>
-
-
-
-
 
 
             <Fab className={classes.fabSession} onClick={() => setOpenStart(true)} color="primary" aria-label="add" variant="extended">

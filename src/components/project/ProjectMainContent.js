@@ -1,57 +1,82 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Card, CardContent, Typography, Paper, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
+import { Box, Container, Grid, Card, CardContent, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
-import { ViewState } from '@devexpress/dx-react-scheduler';
-import { Scheduler, WeekView, MonthView, Appointments, AllDayPanel } from '@devexpress/dx-react-scheduler-material-ui';
+import { ViewState, IntegratedEditing, EditingState } from '@devexpress/dx-react-scheduler';
+import {
+    Scheduler, WeekView, MonthView, Appointments, AllDayPanel, AppointmentTooltip,
+    Toolbar, ViewSwitcher, DateNavigator, TodayButton, AppointmentForm, DragDropProvider, ConfirmationDialog
+} from '@devexpress/dx-react-scheduler-material-ui';
+import { grey } from '@material-ui/core/colors'
 
 import StarRating from './StarsRating'
 
 const useStyles = makeStyles((theme) => ({
+    upperBox: {
+    },
     mainBox: {
-        height: 'calc(100vh - 152px)',
+        height: 'calc(100vh - 64px)',
         overflow: "auto",
+        background: "linear-gradient(0deg, #4368c4, #439dc4)"
+    },
+    projectTitle: {
+        color: grey[50],
     },
 }));
 
-const ExternalViewSwitcher = ({
-    currentViewName,
-    onChange,
-}) => (
-        <RadioGroup
-            aria-label="Views"
-            style={{ flexDirection: 'row' }}
-            name="views"
-            value={currentViewName}
-            onChange={onChange}
-        >
-            <FormControlLabel value="Week" control={<Radio />} label="Week" />
-            <FormControlLabel value="Work Week" control={<Radio />} label="Work Week" />
-            <FormControlLabel value="Month" control={<Radio />} label="Month" />
-        </RadioGroup>
-    );
+
 
 const ProjectMainContent = () => {
-    const [schedulerViewName, setSchedulerViewName] = useState("Month");
     const classes = useStyles();
-    const schedulerData = [
+    const appointmentsArray = [
         {
-            title: 'Website Re-Design Plan',
-            startDate: new Date(2020, 4, 11, 9, 30),
-            endDate: new Date(2020, 4, 11, 11, 30),
-          }, {
-            title: 'Book Flights to San Fran for Sales Trip',
-            startDate: new Date(2018, 6, 23, 12, 0),
-            endDate: new Date(2018, 6, 23, 13, 0),
-          }, {
-            title: 'Install New Router in Dev Room',
-            startDate: new Date(2018, 6, 23, 14, 30),
-            endDate: new Date(2018, 6, 23, 15, 30),
-          },
+            "startDate": "2020-04-11T07:35:00.000Z",
+            "endDate": "2020-04-11T09:30:00.000Z",
+            "title": "Website Re-Design Plan",
+            "id": 0,
+            "location": "Room 1"
+        },
+        {
+            "startDate": "2020-04-12T10:11:00.000Z",
+            "endDate": "2020-04-12T11:00:00.000Z",
+            "title": "Book Flights to San Fran for Sales Trip",
+            "id": 1,
+            "location": "Room 1"
+        },
+        {
+            "startDate": "2020-04-13T12:30:00.000Z",
+            "endDate": "2020-04-13T13:35:00.000Z",
+            "title": "Install New Router in Dev Room",
+            "id": 2,
+            "location": "Room 2"
+        },
     ];
+    const [appointments, setAppointments] = useState(appointmentsArray);
+
+    const commitChanges = ({ added, changed, deleted }) => {
+        console.log(JSON.stringify(added))
+        console.log(JSON.stringify(changed))
+        console.log(JSON.stringify(deleted))
+        let appointmentsModified;
+        if (added) {
+            const startingAddedId = appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
+            appointmentsModified = [...appointments, { id: startingAddedId, ...added }];
+        }
+        if (changed) {
+            appointmentsModified = appointments.map(appointment => (
+                changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+        }
+        if (deleted !== undefined) {
+            appointmentsModified = appointments.filter(appointment => appointment.id !== deleted);
+        }
+        setAppointments(appointmentsModified)
+    }
 
     return (
-        <Box pt={2} className={classes.mainBox}>
+        <Box className={classes.mainBox}>
+            <Box display="flex" justifyContent="center" py={2} className={classes.upperBox} width="100%">
+                <Typography variant="h3" className={classes.projectTitle}>Space shutle</Typography>
+            </Box>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -90,16 +115,14 @@ const ProjectMainContent = () => {
                     </Grid>
                     <Grid item xs={12} sm={12}>
                         <Box py={2}>
-                            <ExternalViewSwitcher
-                                currentViewName={schedulerViewName}
-                                onChange={(e) => setSchedulerViewName(e.target.value )}
-                            />
                             <Paper>
-                                <Scheduler data={schedulerData} >
+                                <Scheduler data={appointments} >
                                     <ViewState
-                                        defaultCurrentDate="2020-04-10"
-                                        currentViewName={schedulerViewName}
+                                        defaultCurrentViewName="Month"
+                                    /><EditingState
+                                        onCommitChanges={commitChanges}
                                     />
+                                    <IntegratedEditing />
                                     <WeekView
                                         startDayHour={9}
                                         endDayHour={19}
@@ -112,7 +135,17 @@ const ProjectMainContent = () => {
                                     />
                                     <MonthView />
                                     <AllDayPanel />
+                                    <Toolbar />
+                                    <ViewSwitcher />
                                     <Appointments />
+                                    <ConfirmationDialog
+                                        ignoreCancel
+                                    />
+                                    <TodayButton />
+                                    <DateNavigator />
+                                    <AppointmentTooltip showCloseButton showDeleteButton showOpenButton />
+                                    <AppointmentForm />
+                                    <DragDropProvider />
                                 </Scheduler>
                             </Paper>
                         </Box>

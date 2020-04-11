@@ -10,7 +10,7 @@ import AddParticipantModalContent from './AddParticipantModalContent'
 
 const useStyles = makeStyles((theme) => ({
     participantsBox: {
-        height: 'calc(100vh - 152px)',
+        height: 'calc(100vh - 64px)',
         overflow: "auto",
     },
     deleteParticipantButton: {

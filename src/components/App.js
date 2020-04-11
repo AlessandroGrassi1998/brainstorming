@@ -11,6 +11,7 @@ import {
 
 import LandingPage from './landingPage/LandingPage'
 import Project from './project/Project'
+import Session from './session/Session';
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
         </Route>
         <Route exact path="/home/project">
           <Project />
+        </Route>
+        <Route exact path="/home/project/session">
+          <Session />
         </Route>
       </Router>
   );
