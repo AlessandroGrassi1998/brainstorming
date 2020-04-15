@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Grid, Fab } from '@material-ui/core'
 import LeftSideNav from "./LeftSideNav";
 import CardsContainer from "./CardsContainer"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Card } from '@material-ui/core';
 import Draggable from 'react-draggable';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,6 +26,7 @@ const Postit = (props) => {
     const [content, setContent] = useState(props.content);
 
     const handleDoubleClick = () => {
+        console.log(`content: ${content}`)
         props.openPostitDialog(true, content, color, setContent, setColor)
     }
 

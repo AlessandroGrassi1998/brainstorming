@@ -1,8 +1,12 @@
 import React from 'react';
-import { Box, Container, Dialog } from '@material-ui/core';
+import { Box, Fab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Postit from './Postit';
 import ModifyPostitDialog from './ModifyPostitDialog';
+import { IoIosAdd } from 'react-icons/io'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { openDialog } from '../../actions/postitDialogActions';
 
 const useStyles = makeStyles((theme) => ({
     boardBox: {
@@ -16,21 +20,44 @@ const useStyles = makeStyles((theme) => ({
         width: "auto",
         height: "100%",
     },
+    fab: {
+        position: 'fixed',
+        bottom: "5%",
+        right: "5%",
+    },
 }));
 
 const Board = (props) => {
     const classes = useStyles();
 
-
     return (
-        <Container maxWidth="xl">
+        <Box>
             <Box border={1} className={classes.boardBox}>
-                <Postit color="green" content="ciao"/>
+                <Postit color="green" content="ciao" />
+                <Postit color="green" content="ciao" />
+                <Postit color="green" content="ciao" />
             </Box>
-            
-                <ModifyPostitDialog />
-        </Container>
+            <ModifyPostitDialog />
+
+            <Fab className={classes.fab} color="primary" aria-label="add" variant="extended" onClick={() => props.openPostitDialog(true, "", "", null, null, "ADD")}>
+                <IoIosAdd size="30" />
+                Add postit
+            </Fab>
+        </Box>
     );
 }
 
-export default Board;
+function mapStateToProps(state) {
+    return {
+        postit: state.postitDialogReducer.postit,
+        open: state.postitDialogReducer.open,
+    }
+}
+
+function mapDispatchToProps(dispatcher) {
+    return bindActionCreators({
+        openPostitDialog: openDialog,
+    }, dispatcher)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

@@ -1,13 +1,15 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 
 import Board from './Board'
 const Session = () => {
-    return ( 
+    return (
         <Box>
-            <Board />
+            <Container maxWidth="xl">
+                <Board />
+            </Container>
         </Box>
-     );
+    );
 }
- 
+
 export default Session;
