@@ -1,37 +1,60 @@
-const initState = { 
+/**
+ * currentPostitIndex refers to the index of the postit that calld the opening of the dialog
+ * if the value is -1 means that the opening is triggered by the add postit button
+ */
+
+const initState = {
     open: false,
-    reason: "modify",
-    postit:{
-        content: "",
-        color: "yellow",
-        setContent : (c) => {},
-        setColor: (c) => {},
-    }
+    currentPostitIndex: -1,
+    nextKeyToAssign: 0,
+    postits: [],
 }
+/*
+ * Open: to open the dialog the openDialog action in invoked and the passing params are
+ * the variable open (true to open) and currenPositionIndex, if -1 it is an add, the actual index otherway
+ * 
+ * Modify: Similar behaviour of the add, but the currentPostitIndex is set to the postit to be modifyed, 
+ * at the end that value is setted to -2 just to trigger the useEffect that will set the default values of the dialog
+ * 
+ * Add: to add a postit the addPostit action is invoked with paramas open, content and color.
+ * Before returning the state the the currentPostitIndex is setted to the last position becouse it is needed to change that propery
+ * if it isn't changed the Dialog is not resetted to its default value.
+ */
 
 
-// When the dialog opens setContent and setColor are setted top the setters of the corrisponding postit
-// when the MODIFY_POSTIT is triggered the setters setted before are called with the right params
-export default(state = initState, action)=>{
+export default (state = initState, action) => {
     const actionType = action.type;
-    if(actionType === "POSTIT_DIALOG_OPEN"){
-        const newState = {...state}
+    if (actionType === "POSTIT_DIALOG_OPEN") {
+        const newState = { ...state }
         newState.open = action.payload.open;
-        newState.reason = action.payload.reason
-        newState.postit.content = action.payload.postit.content;
-        newState.postit.color = action.payload.postit.color;
-        if(action.payload.reason === "modify"){
-            newState.postit.setContent = action.payload.postit.setContent;
-            newState.postit.setColor = action.payload.postit.setColor;
-        }
+        newState.currentPostitIndex = action.payload.currentPostitIndex;
         return newState;
-    } else if(actionType === "MODIFY_POSTIT"){
-        const newState = {...state}
+    } else if (actionType === "MODIFY_POSTIT") {
+        console.log("INSIDE MODIFY POSTIT");
+        const newState = { ...state }
         newState.open = action.payload.open;
         const newContent = action.payload.postit.newContent;
         const newColor = action.payload.postit.newColor;
-        newState.postit.setContent(newContent);
-        newState.postit.setColor(newColor);        
+        const key = newState.postits[newState.currentPostitIndex].key;
+        newState.postits[newState.currentPostitIndex] = { color: newColor, content: newContent, key,  };
+        newState.currentPostitIndex = -2;
+        return newState;
+    } else if (actionType === "ADD_POSTIT") {
+        const newState = { ...state }
+        newState.open = action.payload.open;
+        const content = action.payload.postit.content;
+        const color = action.payload.postit.color;
+        newState.postits.push({ color: color, content: content, key: newState.nextKeyToAssign, });
+        newState.nextKeyToAssign++;
+        newState.currentPostitIndex = -2;
+        return newState;
+    } else if (actionType === "DELETE_POSTIT") {
+        const newState = { ...state };
+        const lastIndex = newState.postits.length - 1;
+        const indexToDelete = action.payload.index;
+        newState.postits[indexToDelete] = newState.postits[lastIndex];
+        newState.postits.pop();
+        newState.currentPostitIndex--;
         return newState;
     }
     return state;

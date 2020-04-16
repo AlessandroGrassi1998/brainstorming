@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, Button, TextField, DialogContent, DialogActions, FormControl, RadioGroup, FormControlLabel, Radio } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { openDialog, modifyPostIt } from '../../actions/postitDialogActions'
+import { openDialog, modifyPostIt, addPostIt } from '../../actions/postitDialogActions'
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -17,18 +17,29 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const getRandomColor = () => {
+    const colors = ["red" , "green" , "yellow", "blue"];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+}
+
 const ModifyPostitDialog = (props) => {
     const classes = useStyles();
-    const [postitNewContent, setPostitNewContent] = useState(props.postit.content)
-    const [postitNewColor, setPostitNewColor] = useState(props.postit.color)
+    const [postitNewContent, setPostitNewContent] = useState("");
+    const [postitNewColor, setPostitNewColor] = useState("");
+    const [isAdd, setIsAdd] = useState(false);
 
     useEffect(() => {
-        setPostitNewContent(props.postit.content)
-    }, [props.postit.content])
-
-    useEffect(() => {
-        setPostitNewColor(props.postit.color)
-    }, [props.postit.color])
+        if(props.currentPostitIndex >= 0){
+            setPostitNewContent(props.postits[props.currentPostitIndex].content);
+            setPostitNewColor(props.postits[props.currentPostitIndex].color);
+            setIsAdd(false);
+        } else {
+            setPostitNewContent("");
+            setPostitNewColor(getRandomColor());
+            setIsAdd(true);
+        }
+    }, [props.currentPostitIndex])
 
     const handleChange = (e, setter) => { setter(e.target.value) }
 
@@ -72,7 +83,7 @@ const ModifyPostitDialog = (props) => {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => { props.modifyPostIt(false, postitNewColor, postitNewContent) }}>OK</Button>
+                <Button onClick={() => { isAdd ? props.addPostIt(false, postitNewColor, postitNewContent) : props.modifyPostIt(false, postitNewColor, postitNewContent) }}>OK</Button>
             </DialogActions>
         </Dialog>
     );
@@ -80,8 +91,9 @@ const ModifyPostitDialog = (props) => {
 
 function mapStateToProps(state) {
     return {
-        postit: state.postitDialogReducer.postit,
+        postits: state.postitDialogReducer.postits,
         open: state.postitDialogReducer.open,
+        currentPostitIndex: state.postitDialogReducer.currentPostitIndex,
     }
 }
 
@@ -89,6 +101,7 @@ function mapDispatchToProps(dispatcher) {
     return bindActionCreators({
         openPostitDialog: openDialog,
         modifyPostIt,
+        addPostIt,
     }, dispatcher)
 }
 

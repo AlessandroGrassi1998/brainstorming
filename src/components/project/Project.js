@@ -3,17 +3,17 @@ import { Box, Fab, Dialog, Typography, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { GiFireworkRocket } from 'react-icons/gi'
 import { grey } from '@material-ui/core/colors'
+import { useHistory } from "react-router-dom";
 
 import StartSessionDialog from './StartSessionDialog';
 import ParticipantBox from './ParticipantBox';
 import ProjectMainContent from './ProjectMainContent'
-
 const useStyles = makeStyles((theme) => ({
     fabSession: {
         position: 'fixed',
-        bottom: "12%",
-        right: "25%",
-        display: "none",
+        bottom: "5%",
+        right: "18%",
+        display: "block",
     },
     fabParticipant: {
         position: 'fixed',
@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Project = (props) => {
     const classes = useStyles();
+    const history = useHistory();
+
     const [isOpenStart, setOpenStart] = useState(false);
 
     return (
@@ -46,11 +48,10 @@ const Project = (props) => {
             </Box>
 
 
-            <Fab className={classes.fabSession} onClick={() => setOpenStart(true)} color="primary" aria-label="add" variant="extended">
+            <Fab className={classes.fabSession} onClick={() => history.push("/home/project/session") } color="primary" aria-label="add" variant="extended">
                 <GiFireworkRocket size="25" />
                 Start session
             </Fab>
-            
 
             <Dialog open={isOpenStart} onClose={() => setOpenStart(false)} aria-labelledby="form-dialog-title">
                 <StartSessionDialog setOpen={setOpenStart} />

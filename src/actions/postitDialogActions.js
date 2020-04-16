@@ -1,15 +1,9 @@
-const openDialog = (open, content, color, setContent, setColor, reason="modify") => {
+const openDialog = (open, currentPostitIndex = -1) => {
     return {
         type: "POSTIT_DIALOG_OPEN",
         payload: {
             open,
-            reason,
-            postit: {
-                content,
-                color,
-                setContent,
-                setColor,
-            }
+            currentPostitIndex,
         }
     }
 }
@@ -40,6 +34,16 @@ const addPostIt = (open, color, content) => {
     }
 }
 
+const deletePostIt = (index) => {
+    return {
+        type: "DELETE_POSTIT",
+        payload: {
+            index
+        }
+    }
+}
+
 export { openDialog };
 export { modifyPostIt };
 export { addPostIt };
+export { deletePostIt };

@@ -54,9 +54,6 @@ const ProjectMainContent = () => {
     const [appointments, setAppointments] = useState(appointmentsArray);
 
     const commitChanges = ({ added, changed, deleted }) => {
-        console.log(JSON.stringify(added))
-        console.log(JSON.stringify(changed))
-        console.log(JSON.stringify(deleted))
         let appointmentsModified;
         if (added) {
             const startingAddedId = appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;

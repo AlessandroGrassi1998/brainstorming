@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Box, Card } from '@material-ui/core';
+import { Box, Card, Button } from '@material-ui/core';
 import Draggable from 'react-draggable';
 import { makeStyles } from '@material-ui/core/styles';
 import { yellow } from '@material-ui/core/colors';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { openDialog, modifyPostIt } from '../../actions/postitDialogActions'
+import { openDialog, deletePostIt } from '../../actions/postitDialogActions'
 
 const useStyles = makeStyles((theme) => ({
     postIt: {
+        position: "absolute",
+        top: "10px",
         width: 250,
         height: 250,
         backgroundColor: yellow[500],
@@ -18,32 +20,26 @@ const useStyles = makeStyles((theme) => ({
 
 const Postit = (props) => {
     const classes = useStyles();
-    let { startPosition, } = props
-    if (!startPosition) {
-        startPosition = { x: 0, y: 0 };
-    }
-    const [color, setColor] = useState(props.color);
-    const [content, setContent] = useState(props.content);
 
     const handleDoubleClick = () => {
-        console.log(`content: ${content}`)
-        props.openPostitDialog(true, content, color, setContent, setColor)
+        props.openPostitDialog(true, props.index)
     }
 
     return (
         <Draggable
-            defaultPosition={{ x: startPosition.x, y: startPosition.y }}
+            handle=".handle"
             bounds="parent">
-            <Card style={{backgroundColor: color}} onDoubleClick={handleDoubleClick} className={`handle ${classes.postIt}`}>
-                <Box p={1}>
-                    {content}
+            <Card style={{ backgroundColor: props.color, }} onDoubleClick={handleDoubleClick} className={`${classes.postIt} `}>
+                <Box border={1} p={1} pb={10} className={`handle`}>
+                    {props.content}
                 </Box>
+                <Button onClick={() => { props.deletePostIt(props.index) }}>delete</Button>
             </Card>
         </Draggable>
     );
 }
 
- 
+
 function mapStateToProps(state) {
     return {
         postit: state.postitDialogReducer.postit,
@@ -54,7 +50,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatcher) {
     return bindActionCreators({
         openPostitDialog: openDialog,
-        modifyPostIt,
+        deletePostIt,
     }, dispatcher)
 }
 

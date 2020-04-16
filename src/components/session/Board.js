@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Fab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Postit from './Postit';
@@ -29,17 +29,25 @@ const useStyles = makeStyles((theme) => ({
 
 const Board = (props) => {
     const classes = useStyles();
+    console.log(`rendering boards ${JSON.stringify(props)}`);
+    const [postits, setPostits] = useState(); 
+    useEffect(() => {
+        console.log("use effect")
+        const postits_ = props.postits.map((postit, i) => {
+            return <Postit key={postit.key} index={i} color={postit.color} content={postit.content} />
+        });
+        setPostits(postits_)
+    }, [props.currentPostitIndex])
+
 
     return (
         <Box>
             <Box border={1} className={classes.boardBox}>
-                <Postit color="green" content="ciao" />
-                <Postit color="green" content="ciao" />
-                <Postit color="green" content="ciao" />
+                {postits}
             </Box>
             <ModifyPostitDialog />
 
-            <Fab className={classes.fab} color="primary" aria-label="add" variant="extended" onClick={() => props.openPostitDialog(true, "", "", null, null, "ADD")}>
+            <Fab className={classes.fab} color="primary" aria-label="add" variant="extended" onClick={() => props.openPostitDialog(true, -1)}>
                 <IoIosAdd size="30" />
                 Add postit
             </Fab>
@@ -49,8 +57,9 @@ const Board = (props) => {
 
 function mapStateToProps(state) {
     return {
-        postit: state.postitDialogReducer.postit,
+        postits: state.postitDialogReducer.postits,
         open: state.postitDialogReducer.open,
+        currentPostitIndex: state.postitDialogReducer.currentPostitIndex,
     }
 }
 
