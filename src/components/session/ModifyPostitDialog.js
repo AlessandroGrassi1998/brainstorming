@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const getRandomColor = () => {
-    const colors = ["red" , "green" , "yellow", "blue"];
+    const colors = ["red", "green", "yellow", "blue"];
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
 }
@@ -30,7 +30,7 @@ const ModifyPostitDialog = (props) => {
     const [isAdd, setIsAdd] = useState(false);
 
     useEffect(() => {
-        if(props.currentPostitIndex >= 0){
+        if (props.currentPostitIndex >= 0) {
             setPostitNewContent(props.postits[props.currentPostitIndex].content);
             setPostitNewColor(props.postits[props.currentPostitIndex].color);
             setIsAdd(false);
@@ -46,7 +46,6 @@ const ModifyPostitDialog = (props) => {
     return (
         <Dialog open={props.open} onClose={() => props.openPostitDialog(false)} aria-labelledby="form-dialog-title">
             <DialogContent>
-
                 <FormControl component="fieldset">
                     <RadioGroup row aria-label="position" name="position" value={postitNewColor} onChange={(e) => handleChange(e, setPostitNewColor)}>
                         <FormControlLabel
@@ -69,7 +68,7 @@ const ModifyPostitDialog = (props) => {
                 </FormControl>
 
                 <TextField
-                    id="textasedasd"
+                    id="text"
                     multiline
                     variant="outlined"
                     rows={10}
@@ -79,7 +78,7 @@ const ModifyPostitDialog = (props) => {
                     value={postitNewContent}
                     onChange={(e) => { handleChange(e, setPostitNewContent) }}
                     className={classes.textArea}
-                    style={{ backgroundColor: postitNewColor}}
+                    style={{ backgroundColor: postitNewColor }}
                 />
             </DialogContent>
             <DialogActions>

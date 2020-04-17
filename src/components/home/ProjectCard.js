@@ -4,8 +4,9 @@ import { Card, CardContent, CardMedia, Typography, Grid, CardActionArea } from '
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+    card: {
         maxWidth: 345,
+        margin: "auto",
     },
     projectMedia: {
         height: 140,
@@ -18,8 +19,8 @@ const ProjectCard = (props) => {
     const handleClick = () => { history.push("/home/project") }
     const { imgPath, imgTitle, projectTitle } = props;
     return (
-        <Grid item xs={12} sm={6} lg={4}>
-            <Card className={classes.root} onClick={handleClick}>
+        <Grid item xs={12} sm={6} lg={4} >
+            <Card className={classes.card} onClick={handleClick}>
                 <CardActionArea>
                     <CardMedia
                         className={classes.projectMedia}

@@ -7,6 +7,7 @@ import { IoIosAdd } from 'react-icons/io'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { openDialog } from '../../actions/postitDialogActions';
+import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     boardBox: {
@@ -15,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         marginTop: 10,
         padding: 10,
+        backgroundColor:grey[50],
+        borderRadius: 20,
     },
     postItContainer: {
         width: "auto",
@@ -42,7 +45,7 @@ const Board = (props) => {
 
     return (
         <Box>
-            <Box border={1} className={classes.boardBox}>
+            <Box className={classes.boardBox}>
                 {postits}
             </Box>
             <ModifyPostitDialog />

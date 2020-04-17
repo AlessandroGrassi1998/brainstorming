@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Box, Card, Button } from '@material-ui/core';
+import React from 'react';
+import { Box, Card, IconButton, Typography } from '@material-ui/core';
 import Draggable from 'react-draggable';
 import { makeStyles } from '@material-ui/core/styles';
-import { yellow } from '@material-ui/core/colors';
+import { yellow, grey } from '@material-ui/core/colors';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { openDialog, deletePostIt } from '../../actions/postitDialogActions'
+import { MdDeleteForever } from 'react-icons/md'
 
 const useStyles = makeStyles((theme) => ({
     postIt: {
@@ -15,6 +16,16 @@ const useStyles = makeStyles((theme) => ({
         height: 250,
         backgroundColor: yellow[500],
         overflow: "auto",
+    },
+    deleteButton: {
+        position: "absolute",
+        right: 0,
+        padding: 0,
+        color: grey[50],
+    },
+    text: {
+        fontWeight: "bold",
+        color: grey[50],
     },
 }));
 
@@ -29,11 +40,13 @@ const Postit = (props) => {
         <Draggable
             handle=".handle"
             bounds="parent">
-            <Card style={{ backgroundColor: props.color, }} onDoubleClick={handleDoubleClick} className={`${classes.postIt} `}>
-                <Box border={1} p={1} pb={10} className={`handle`}>
-                    {props.content}
+            <Card style={{ backgroundColor: props.color, }} onDoubleClick={handleDoubleClick} className={`${classes.postIt}`}>
+                <IconButton onClick={() => { props.deletePostIt(props.index) }} className={classes.deleteButton} aria-label="upload picture" component="span">
+                    <MdDeleteForever size="20" className={classes.icons} />
+                </IconButton>
+                <Box borderBottom={1} p={1} pb={10} className={`handle`}>
+                    <Typography className={classes.text}>{props.content}</Typography>
                 </Box>
-                <Button onClick={() => { props.deletePostIt(props.index) }}>delete</Button>
             </Card>
         </Draggable>
     );
