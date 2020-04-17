@@ -5,8 +5,13 @@ import { bindActionCreators } from 'redux';
 import { openDialog, modifyPostIt, addPostIt } from '../../actions/postitDialogActions'
 import { makeStyles } from '@material-ui/core/styles';
 
+import { yellow, blue, red, green, grey } from '@material-ui/core/colors';
+
 
 const useStyles = makeStyles((theme) => ({
+    dialog:{
+        backgroundColor: grey[100],
+    },
     textArea: {
         width: 500,
     },
@@ -15,7 +20,23 @@ const useStyles = makeStyles((theme) => ({
         width: 25,
         height: 25,
     },
+    input:{
+        fontWeight: "bold",
+    },
 }));
+
+const getColor = (color) => {
+    if(color === "yellow"){
+        return { background: yellow[500], text: grey[900]}
+    } else if( color === "blue"){
+        return {background: blue[500], text:grey[50]}
+    } else if(color === "red"){
+        return {background: red[500], text:grey[50]}
+    } else if(color === "green"){
+        return {background: green[500], text:grey[50]}
+    }
+    return { background: yellow[500], text: grey[900]};
+}
 
 const getRandomColor = () => {
     const colors = ["red", "green", "yellow", "blue"];
@@ -44,7 +65,7 @@ const ModifyPostitDialog = (props) => {
     const handleChange = (e, setter) => { setter(e.target.value) }
 
     return (
-        <Dialog open={props.open} onClose={() => props.openPostitDialog(false)} aria-labelledby="form-dialog-title">
+        <Dialog classes={{paper: classes.dialog}} open={props.open} onClose={() => props.openPostitDialog(false)} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <FormControl component="fieldset">
                     <RadioGroup row aria-label="position" name="position" value={postitNewColor} onChange={(e) => handleChange(e, setPostitNewColor)}>
@@ -69,6 +90,10 @@ const ModifyPostitDialog = (props) => {
 
                 <TextField
                     id="text"
+                    InputProps={{
+                        style: {color: getColor(postitNewColor).text},
+                        className: classes.input,
+                      }}
                     multiline
                     variant="outlined"
                     rows={10}
@@ -78,7 +103,7 @@ const ModifyPostitDialog = (props) => {
                     value={postitNewContent}
                     onChange={(e) => { handleChange(e, setPostitNewContent) }}
                     className={classes.textArea}
-                    style={{ backgroundColor: postitNewColor }}
+                    style={{ backgroundColor: getColor(postitNewColor).background }}
                 />
             </DialogContent>
             <DialogActions>
