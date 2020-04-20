@@ -7,6 +7,8 @@ const initState = {
     open: false,
     currentPostitIndex: -1,
     nextKeyToAssign: 0,
+    position: { x: 0, y: 0 },
+
     postits: [],
 }
 /*
@@ -28,6 +30,7 @@ export default (state = initState, action) => {
         const newState = { ...state }
         newState.open = action.payload.open;
         newState.currentPostitIndex = action.payload.currentPostitIndex;
+        newState.position = action.payload.position;
         return newState;
     } else if (actionType === "MODIFY_POSTIT") {
         console.log("INSIDE MODIFY POSTIT");
@@ -36,7 +39,8 @@ export default (state = initState, action) => {
         const newContent = action.payload.postit.newContent;
         const newColor = action.payload.postit.newColor;
         const key = newState.postits[newState.currentPostitIndex].key;
-        newState.postits[newState.currentPostitIndex] = { color: newColor, content: newContent, key,  };
+        const position = newState.position;
+        newState.postits[newState.currentPostitIndex] = { color: newColor, content: newContent, key, position};
         newState.currentPostitIndex = -2;
         return newState;
     } else if (actionType === "ADD_POSTIT") {
@@ -44,7 +48,8 @@ export default (state = initState, action) => {
         newState.open = action.payload.open;
         const content = action.payload.postit.content;
         const color = action.payload.postit.color;
-        newState.postits.push({ color: color, content: content, key: newState.nextKeyToAssign, });
+        const position = newState.position;
+        newState.postits.push({ color: color, content: content, key: newState.nextKeyToAssign, position });
         newState.nextKeyToAssign++;
         newState.currentPostitIndex = -2;
         return newState;

@@ -1,9 +1,10 @@
-const openDialog = (open, currentPostitIndex = -1) => {
+const openDialog = (open, currentPostitIndex = -1, position = { x: 0, y: 0 }) => {
     return {
         type: "POSTIT_DIALOG_OPEN",
         payload: {
             open,
             currentPostitIndex,
+            position,
         }
     }
 }

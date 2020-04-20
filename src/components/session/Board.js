@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         marginTop: 10,
         padding: 10,
-        backgroundColor:grey[50],
+        backgroundColor: grey[50],
         borderRadius: 20,
     },
     postItContainer: {
@@ -33,18 +33,33 @@ const useStyles = makeStyles((theme) => ({
 const Board = (props) => {
     const classes = useStyles();
     console.log(`rendering boards ${JSON.stringify(props)}`);
-    const [postits, setPostits] = useState(); 
+    const [postits, setPostits] = useState();
     useEffect(() => {
         console.log("use effect")
         const postits_ = props.postits.map((postit, i) => {
-            return <Postit key={postit.key} index={i} color={postit.color} content={postit.content} />
+            return <Postit key={postit.key} index={i} color={postit.color} content={postit.content} defaultPosition={postit.position} />
         });
         setPostits(postits_)
     }, [props.currentPostitIndex])
 
+    const handleDoubleClick = (event) => {
+        let x = event.pageX - document.getElementById("board").offsetLeft;
+        let y = event.pageY - document.getElementById("board").offsetTop;
+        if(x < 125){
+            x = 0
+        } else {
+            x -= 125
+        }
+        if(y < 125){
+            y = 0
+        } else {
+            y -= 125
+        }
+        props.openPostitDialog(true, -1, { x, y })
+    }
 
     return (
-        <Box>
+        <Box id="board" onDoubleClick={(event) => { handleDoubleClick(event) }}>
             <Box className={classes.boardBox}>
                 {postits}
             </Box>

@@ -1,15 +1,16 @@
 import React from 'react';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, Grid } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
-import { makeStyles, hexToRgb } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Board from './Board'
+import Board from './Board';
+import Individual from './Individual';
 
 const useStyles = makeStyles((theme) => ({
-    mainBox:{
+    mainBox: {
         backgroundColor: grey[300],
         height: "calc(100vh - 64px)",
-        overflow:"auto",
+        overflow: "auto",
     },
     board: {
         display: "block",
@@ -23,10 +24,16 @@ const Session = () => {
         <Box className={classes.mainBox}>
             <Container maxWidth="xl">
                 <Box className={classes.board} >
-                    <Board />
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <Board />
+                        </Grid>
+                        <Grid item xs={0}>
+                        </Grid>
+                    </Grid>
                 </Box>
                 <Box>
-                    
+
                 </Box>
             </Container>
         </Box>

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         width: 250,
         height: 250,
         backgroundColor: yellow[500],
-        overflow: "auto",
+        overflowY: "auto",
     },
     deleteButton: {
         position: "absolute",
@@ -47,7 +47,8 @@ const getColor = (color) => {
 const Postit = (props) => {
     const classes = useStyles();
     console.log("RENDERING...")
-    const handleDoubleClick = () => {
+    const handleDoubleClick = (event) => {
+        event.stopPropagation();
         props.openPostitDialog(true, props.index)
     }
     const [color, setColor] = useState(getColor(props.color));
@@ -59,8 +60,9 @@ const Postit = (props) => {
         <Draggable
             handle=".handle"
             cancel=".notHandle"
-            bounds="parent">
-            <Card style={{ backgroundColor: color.background, }} onDoubleClick={handleDoubleClick} className={`${classes.postIt}`}>
+            bounds="parent"
+            defaultPosition={props.defaultPosition}>
+            <Card style={{ backgroundColor: color.background, }} onDoubleClick={(event) => {handleDoubleClick(event)}} className={`${classes.postIt}`}>
                 <IconButton style={{ color: color.text }} onClick={() => { props.deletePostIt(props.index) }} className={classes.deleteButton} aria-label="upload picture" component="span">
                     <MdDeleteForever size="20" />
                 </IconButton>
