@@ -1,39 +1,50 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Stepper, Step, StepButton, Button, Typography } from '@material-ui/core';
+import { Stepper, Step, StepButton, Button, Typography, Container } from '@material-ui/core';
+import Step1 from './stepsCreateSession/Step1';
+import Step2 from './stepsCreateSession/Step2';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      width: '100%',
+        width:"100%",
+    },
+    stepper:{
+
     },
     button: {
-      marginRight: theme.spacing(1),
+        marginRight: theme.spacing(1),
     },
     completed: {
-      display: 'inline-block',
+        display: 'inline-block',
     },
     instructions: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1),
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
     },
-  }));
-  
-  function getSteps() {
-    return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-  }
-  
-  function getStepContent(step) {
+    content:{
+         width: "100%",
+         height: 300,
+         transition: "height 0.4s",
+         overflowY:"auto",
+    },
+}));
+
+function getSteps() {
+    return ['Set up the session', 'Choose a model to follow', 'Make it your way'];
+}
+
+function getStepContent(step) {
     switch (step) {
-      case 0:
-        return 'Step 1: Select campaign settings...';
-      case 1:
-        return 'Step 2: What is an ad group anyways?';
-      case 2:
-        return 'Step 3: This is the bit I really care about!';
-      default:
-        return 'Unknown step';
+        case 0:
+            return <Step1 />;
+        case 1:
+            return <Step2 />;
+        case 2:
+            return 'Step 3: This is the bit I really care about!';
+        default:
+            return 'Unknown step';
     }
-  }
+}
 
 
 const StartSessionDialog = () => {
@@ -87,10 +98,17 @@ const StartSessionDialog = () => {
         setActiveStep(0);
         setCompleted({});
     };
-
+    let height = 300
+    if(activeStep === 0){
+        height = 300
+    } else if(activeStep === 1){
+        height = 600
+    } else if(activeStep === 2){
+        height = 200
+    }
     return (
         <div className={classes.root}>
-            <Stepper nonLinear activeStep={activeStep}>
+            <Stepper className={classes.stepper} nonLinear activeStep={activeStep}>
                 {steps.map((label, index) => (
                     <Step key={label}>
                         <StepButton onClick={handleStep(index)} completed={completed[index]}>
@@ -107,9 +125,9 @@ const StartSessionDialog = () => {
                         </Typography>
                         <Button onClick={handleReset}>Reset</Button>
                     </div>
-                        ) : (
+                ) : (
                         <div>
-                            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                            <Container style={{height}} maxWidth="xl" className={classes.content}>{getStepContent(activeStep)}</Container>
                             <div>
                                 <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                     Back
@@ -127,7 +145,7 @@ const StartSessionDialog = () => {
                                         <Typography variant="caption" className={classes.completed}>
                                             Step {activeStep + 1} already completed
                                         </Typography>
-                                            ) : (
+                                    ) : (
                                             <Button variant="contained" color="primary" onClick={handleComplete}>
                                                 {completedSteps() === totalSteps() - 1 ? 'Finish' : 'Complete Step'}
                                             </Button>

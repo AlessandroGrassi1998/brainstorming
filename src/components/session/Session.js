@@ -28,7 +28,7 @@ const Session = () => {
                         <Grid item xs={12}>
                             <Board />
                         </Grid>
-                        <Grid item xs={0}>
+                        <Grid item xs={false}>
                         </Grid>
                     </Grid>
                 </Box>

@@ -45,13 +45,19 @@ const Board = (props) => {
     const handleDoubleClick = (event) => {
         let x = event.pageX - document.getElementById("board").offsetLeft;
         let y = event.pageY - document.getElementById("board").offsetTop;
+        const board = document.getElementById("board");
+        console.log(`${board.offsetWidth} ${board.offsetHeight}`)
         if(x < 125){
             x = 0
+        } else if(x > board.offsetWidth - 250){
+            x = board.offsetWidth - 270
         } else {
             x -= 125
         }
         if(y < 125){
             y = 0
+        } else if(y > board.offsetHeight - 250){
+            y = board.offsetHeight - 270
         } else {
             y -= 125
         }

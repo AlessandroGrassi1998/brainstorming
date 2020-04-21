@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Fab, Dialog, Typography, Grid } from '@material-ui/core';
+import { Box, Fab, Dialog, DialogContent, Grid, } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { GiFireworkRocket } from 'react-icons/gi'
 import { grey } from '@material-ui/core/colors'
@@ -15,6 +15,12 @@ const useStyles = makeStyles((theme) => ({
         right: "18%",
         display: "block",
     },
+    fabProgramSession: {
+        position: 'fixed',
+        bottom: "15%",
+        right: "18%",
+        display: "block",
+    },
     fabParticipant: {
         position: 'fixed',
         bottom: "5%",
@@ -25,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
     },
     outerBox: {
         height: 'calc(100vh - 64px)',
+    },
+    programSessionDialog: {
+        width:"60%",
+        margin:"auto",
     },
 }));
 
@@ -48,13 +58,23 @@ const Project = (props) => {
             </Box>
 
 
-            <Fab className={classes.fabSession} onClick={() => history.push("/home/project/session") } color="primary" aria-label="add" variant="extended">
+            <Fab className={classes.fabSession} onClick={() => history.push("/home/project/session")} color="primary" aria-label="add" variant="extended">
                 <GiFireworkRocket size="25" />
                 Start session
             </Fab>
 
-            <Dialog open={isOpenStart} onClose={() => setOpenStart(false)} aria-labelledby="form-dialog-title">
-                <StartSessionDialog setOpen={setOpenStart} />
+            <Fab className={classes.fabProgramSession} onClick={() => setOpenStart(true)} color="primary" aria-label="add" variant="extended">
+                <GiFireworkRocket size="25" />
+                Program session
+            </Fab>
+
+            <Dialog className={classes.programSessionDialog} fullWidth={true} maxWidth={'xl'} open={isOpenStart} onClose={() => setOpenStart(false)}
+                modal={true}
+                autoDetectWindowHeight={false}
+                autoScrollBodyContent={false}>
+                <DialogContent>
+                    <StartSessionDialog setOpen={setOpenStart} />
+                </DialogContent>
             </Dialog>
         </Box >
     );
