@@ -4,16 +4,18 @@ import { grey } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Board from './Board';
-import Individual from './Individual';
+import Model635 from './Model635';
 
 const useStyles = makeStyles((theme) => ({
     mainBox: {
         backgroundColor: grey[300],
         height: "calc(100vh - 64px)",
-        overflow: "auto",
     },
     board: {
         display: "block",
+    },
+    contentContainer: {
+        height: "100%",
     },
 }));
 
@@ -22,18 +24,9 @@ const Session = () => {
 
     return (
         <Box className={classes.mainBox}>
-            <Container maxWidth="xl">
-                <Box className={classes.board} >
-                    <Grid container spacing={1}>
-                        <Grid item xs={12}>
-                            <Board />
-                        </Grid>
-                        <Grid item xs={false}>
-                        </Grid>
-                    </Grid>
-                </Box>
-                <Box>
-
+            <Container maxWidth="xl" className={classes.contentContainer}>
+                <Box paddingY={1} className={`${classes.board} ${classes.contentContainer}`}>
+                    <Model635 />
                 </Box>
             </Container>
         </Box>

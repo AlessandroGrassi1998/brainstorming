@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Stepper, Step, StepButton, Button, Typography, Container } from '@material-ui/core';
+import { Stepper, Step, StepButton, Button, Typography, Container, Box } from '@material-ui/core';
 import Step1 from './stepsCreateSession/Step1';
 import Step2 from './stepsCreateSession/Step2';
+import Step3 from './stepsCreateSession/Step3';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width:"100%",
+        width: "100%",
     },
-    stepper:{
+    stepper: {
 
     },
     button: {
@@ -21,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     },
-    content:{
-         width: "100%",
-         height: 300,
-         transition: "height 0.4s",
-         overflowY:"auto",
+    content: {
+        width: "100%",
+        height: 300,
+        transition: "height 0.4s",
+        overflowY: "auto",
     },
 }));
 
@@ -33,25 +34,47 @@ function getSteps() {
     return ['Set up the session', 'Choose a model to follow', 'Make it your way'];
 }
 
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return <Step1 />;
-        case 1:
-            return <Step2 />;
-        case 2:
-            return 'Step 3: This is the bit I really care about!';
-        default:
-            return 'Unknown step';
-    }
-}
 
 
 const StartSessionDialog = () => {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
+    const [activeStep, setActiveStep] = useState(0);
+    const [completed, setCompleted] = useState({});
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [firstStepCompleted, setFirstStepCompleted] = useState(false)
+    const [selectedModel, setSelectedModel] = useState(-1);
     const steps = getSteps();
+    useEffect(() => {
+        if (selectedModel !== -1)
+            handleComplete();
+    }, [selectedModel])
+    useEffect(() => {
+        completed["0"] = false;
+    }, [firstStepCompleted])
+    console.log(JSON.stringify(completed))
+    const getStepContent = (step) => {
+        switch (step) {
+            case 0:
+                return <Step1 setCompleted={setCompleted}
+                    title={title}
+                    setTitle={setTitle}
+                    description={description}
+                    setDescription={setDescription}
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                    setFirstStepCompleted={setFirstStepCompleted} />;
+            case 1:
+                return <Step2 setCompleted={setCompleted}
+                    selectedModel={selectedModel}
+                    setSelectedModel={setSelectedModel} />;
+            case 2:
+                return <Step3 setCompleted={setCompleted} />;
+            default:
+                return 'Unknown step';
+        }
+    }
 
     const totalSteps = () => {
         return steps.length;
@@ -99,11 +122,11 @@ const StartSessionDialog = () => {
         setCompleted({});
     };
     let height = 300
-    if(activeStep === 0){
+    if (activeStep === 0) {
         height = 300
-    } else if(activeStep === 1){
+    } else if (activeStep === 1) {
         height = 600
-    } else if(activeStep === 2){
+    } else if (activeStep === 2) {
         height = 200
     }
     return (
@@ -119,15 +142,15 @@ const StartSessionDialog = () => {
             </Stepper>
             <div>
                 {allStepsCompleted() ? (
-                    <div>
-                        <Typography className={classes.instructions}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
-                        <Button onClick={handleReset}>Reset</Button>
-                    </div>
+                    <Box>
+                        <Typography>Title: {title}</Typography>
+                        <Typography>Date: {selectedDate.toDateString()}</Typography>
+                        <Typography>Selected model: {selectedModel}</Typography>
+                        <Button onClick={handleReset}>Start</Button>
+                    </Box>
                 ) : (
                         <div>
-                            <Container style={{height}} maxWidth="xl" className={classes.content}>{getStepContent(activeStep)}</Container>
+                            <Container style={{ height }} maxWidth="xl" className={classes.content}>{getStepContent(activeStep)}</Container>
                             <div>
                                 <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                                     Back
@@ -135,7 +158,7 @@ const StartSessionDialog = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleNext}
+                                    onClick={firstStepCompleted && activeStep === 0 ? () => handleComplete(0) : handleNext}
                                     className={classes.button}
                                 >
                                     Next

@@ -10,11 +10,13 @@ import { openDialog } from '../../actions/postitDialogActions';
 import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
+    root:{
+        height: "100%",
+    },
     boardBox: {
         position: "relative",
-        height: "calc(100vh - 84px)",
+        height: "100%",
         width: "100%",
-        marginTop: 10,
         padding: 10,
         backgroundColor: grey[50],
         borderRadius: 20,
@@ -65,7 +67,7 @@ const Board = (props) => {
     }
 
     return (
-        <Box id="board" onDoubleClick={(event) => { handleDoubleClick(event) }}>
+        <Box id="board" onDoubleClick={(event) => { handleDoubleClick(event) }} className={classes.root}>
             <Box className={classes.boardBox}>
                 {postits}
             </Box>

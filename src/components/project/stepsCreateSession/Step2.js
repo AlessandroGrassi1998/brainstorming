@@ -22,7 +22,7 @@ const Step2 = (props) => {
         return (
             <Grid item xs={12} md={6} lg={4} key={i}>
                 <Card className={classes.card}>
-                    <CardActionArea>
+                    <CardActionArea onClick={() => props.setSelectedModel(i)}>
                         <CardContent>
                             <Typography variant="h3">{card.title}</Typography>
                             <Typography variant="body1">{card.description}</Typography>
