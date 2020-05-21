@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-brainstorming-dev-143016-authRole",
+            "UnauthRoleArn": "arn:aws:iam::700746163182:role/amplify-brainstorming-dev-143016-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::700746163182:role/amplify-brainstorming-dev-143016-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "amplify-brainstorming-dev-143016-deployment",
+            "UnauthRoleName": "amplify-brainstorming-dev-143016-unauthRole",
+            "StackName": "amplify-brainstorming-dev-143016",
+            "StackId": "arn:aws:cloudformation:eu-central-1:700746163182:stack/amplify-brainstorming-dev-143016/bbcfeee0-9127-11ea-a54b-0a1a4d297742",
+            "AmplifyAppId": "dunksm544cnkv"
+        },
+        "categories": {
+            "auth": {
+                "brainstormingadf47f7d": {}
+            }
+        }
+    }
+}

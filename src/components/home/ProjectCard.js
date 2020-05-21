@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
 const ProjectCard = (props) => {
     const classes = useStyles();
     const history = useHistory();
-    const handleClick = () => { history.push("/home/project") }
-    const { imgPath, imgTitle, projectTitle } = props;
+    const { imgPath, imgTitle, projectTitle, id } = props;
+    const handleClick = () => { history.push(`/home/${id}`) }
+
     return (
         <Grid item xs={12} sm={6} lg={4} >
             <Card className={classes.card} onClick={handleClick}>

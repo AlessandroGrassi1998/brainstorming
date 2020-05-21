@@ -1,0 +1,73 @@
+type User 
+@model
+@auth(rules: [{allow: owner, ownerField: "email"},
+              {allow: private, operations: [ read ]}])
+@key(fields: ["id"])
+{
+  id: String!
+  birthDay: AWSTimestamp
+  email: String
+  username: String
+  name: String
+  surname: String
+}
+
+
+type Project
+@model
+@auth(rules: [{allow: owner}, {allow: owner, ownerField: "members", operations: [read]}])
+@key(name: "byNamebyDescription", fields: ["name", "description"])
+{
+  id: ID!
+  name: String!
+  description: String!
+  members: [String]!
+  sessions: [Session] @connection(keyName: "byProject", fields: ["id"])
+}
+
+type Session
+@model
+@auth( rules: [{allow: owner, ownerField: "participants"},
+               {allow: owner, ownerField: "projectMembers", operations: [read]}])
+@key(name:"byProject", fields:["projectID", "startingTimestamp"])
+{
+  id: ID!
+  topic: String!
+  projectID: ID!
+  description: String
+  startingTimestamp: AWSTimestamp!
+  endingTimestamp: AWSTimestamp
+  started: Boolean
+  finished: Boolean
+  template: Template
+  personalizationsToTemplate: AWSJSON #this could be a [String] or [Int] in the future
+  phase: Int
+  rating: Int
+  ideaGenerated: Int!
+  participants: [String!]!
+  projectMembers: [String!]!
+}
+
+type Template
+@model
+@auth(rules: [ {allow: groups, groups: ["Admin"]} ])
+{
+  id: ID!
+  nPhases: Int!
+  maxParticipants: Int
+  minParticipants: Int
+  suggestedParticipants: Int
+  name: String!
+  description: String!
+  linkToReference: AWSURL
+  phases: AWSJSON
+}
+
+input AddMemberToProjectInput {
+    id: ID!
+    newMembers: [String!]!
+}
+
+type Mutation {
+    addMemberToProject(input: AddMemberToProjectInput!): Project!
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, Card, CardContent, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table'
@@ -10,6 +10,7 @@ import {
 import { grey } from '@material-ui/core/colors'
 
 import StarRating from './StarsRating'
+
 
 const useStyles = makeStyles((theme) => ({
     upperBox: {
@@ -24,9 +25,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
-
-const ProjectMainContent = () => {
+const ProjectMainContent = (props) => {
+    const { projectId, title, description, sessions } = props;
     const classes = useStyles();
     const appointmentsArray = [
         {
@@ -72,7 +72,7 @@ const ProjectMainContent = () => {
     return (
         <Box className={classes.mainBox}>
             <Box display="flex" justifyContent="center" py={2} className={classes.upperBox} width="100%">
-                <Typography variant="h3" className={classes.projectTitle}>Space shutle</Typography>
+                <Typography variant="h3" className={classes.projectTitle}>{title}</Typography>
             </Box>
             <Container maxWidth="lg">
                 <Grid container spacing={2}>
@@ -80,7 +80,7 @@ const ProjectMainContent = () => {
                         <Card>
                             <CardContent>
                                 <Typography variant="h4">Description</Typography>
-                                <Typography variant="body1">Inquietude simplicity terminated she compliment remarkably few her nay. The weeks are ham asked jokes. Neglected perceived shy nay concluded. Not mile draw plan snug next all. Houses latter an valley be indeed wished merely in my. Money doubt oh drawn every or an china. Visited out friends for expense message set eat.To sorry world an at do spoil along. Incommode he depending do frankness remainder to. Edward day almost active him friend thirty piqued. People as period twenty my extent as. Set was better abroad ham plenty secure had horses. Admiration has sir decisively excellence say everything inhabiting acceptance. Sooner settle add put you sudden him.</Typography>
+                                <Typography variant="body1">{description}</Typography>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -90,20 +90,11 @@ const ProjectMainContent = () => {
                                 title="Previous sessions"
                                 columns={[
                                     { title: 'Topic', field: 'topic' },
-                                    { title: 'Date', field: 'date', type: "date" },
-                                    { title: 'Idea generated', field: 'nIdeas', type: 'numeric' },
+                                    { title: 'Date', field: 'startingTimestamp', type: "date" },
+                                    { title: 'Idea generated', field: 'ideaGenerated', type: 'numeric' },
                                     { title: 'Rating', field: 'rating', render: rowData => <StarRating rating={rowData.rating} /> },
                                 ]}
-                                data={[
-                                    { topic: 'Space shuttle', date: '22/01/2019', nIdeas: 27, rating: 4.0 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 4.5 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 5.0 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 2.5 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 3.0 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 4.5 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 1.5 },
-                                    { topic: 'Landing platform', date: '13/06/2018', nIdeas: 47, rating: 3.5 },
-                                ]}
+                                data={sessions}
                                 options={{
                                     sorting: true
                                 }}

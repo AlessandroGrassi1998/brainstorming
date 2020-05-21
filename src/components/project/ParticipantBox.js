@@ -26,11 +26,11 @@ const Participant = (props) => {
     const classes = useStyles();
     let typeIcon = <AiOutlineCrown size="30" />;
     let tooltipTitle = "Group facilitator";
-    if(!props.isFacilitator){
+    if (!props.isFacilitator) {
         typeIcon = <FaRegLightbulb size="30" />;
         tooltipTitle = "Participant"
     }
-    
+
 
     return (
         <Box mx={1}>
@@ -57,7 +57,16 @@ const Participant = (props) => {
 
 const ParticipantBox = (props) => {
     const classes = useStyles();
+    const { projectId, members, setMembers } = props;
     const [isOpenAdd, setOpenAdd] = useState(false);
+    let membersUI = members.map((member, i) => {
+        let isFacilitator = i == 0 ? true : false;
+        return (
+            <Participant name={member} surname="" isFacilitator={isFacilitator} />
+        )
+    })
+
+
 
     return (
         <div>
@@ -69,16 +78,12 @@ const ParticipantBox = (props) => {
                 </Box>
                 <Divider />
                 {/*Box containing the name of participant, it's going to be abstracted*/}
-                <Participant name="Alessandro" surname="Grassi" isFacilitator={true}/>
-                <Participant name="Alessandro" surname="Grassi" isFacilitator={false}/>
-                <Participant name="Alessandro" surname="Grassi" isFacilitator={false}/>
-                <Participant name="Alessandro" surname="Grassi" isFacilitator={false}/>
-                <Participant name="Alessandro" surname="Grassi" isFacilitator={false}/>
+                {membersUI}
             </Box>
 
 
             <Dialog open={isOpenAdd} onClose={() => setOpenAdd(false)} aria-labelledby="form-dialog-title">
-                <AddParticipantModalContent setOpen={setOpenAdd} />
+                <AddParticipantModalContent projectId={projectId} setOpen={setOpenAdd} setMembers={setMembers} members={members}/>
             </Dialog>
         </div>
     );

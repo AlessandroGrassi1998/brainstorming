@@ -1,0 +1,22 @@
+{
+    "version": "2017-02-28",
+    "operation": "UpdateItem",
+    "key": {
+        "id": { "S": "$ctx.args.input.id"}
+    },
+    "update": {
+        "expression":"SET members = list_append(if_not_exists(members, :emptyList), :newMembers)",
+        "expressionValues":
+          {
+            ":newMembers":{"L": $ctx.args.input.newMembers },
+            ":emptyList":{"L": []}
+          }
+        },
+        "condition": {
+          "expression" : "#owner = :expectedOwner",
+          "expressionNames" : {"#owner" : "owner"} ,
+          "expressionValues" : {
+            ":expectedOwner" : {"S" : "${context.identity.username}"}
+          }
+        }
+}

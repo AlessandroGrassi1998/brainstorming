@@ -1,0 +1,25 @@
+[
+    {
+        "phaseName": "individual",
+        "regarding": "everyone",
+        "howManyTimes": 1,
+        "maxIdeas": 3,
+        "minIdeas": 3,
+        "UI": []
+    },
+    {
+        "phaseName": "individual_with_shared_ideas",
+        "regarding": "everyone",
+        "howManyTimes": "nMembers - 1",
+        "maxIdeas": 3,
+        "minIdeas": 3
+    },
+    {
+        "phaseName": "A string containig whatever",
+        "regarding": "Peaple that can interact. n for everyone, f for only facilitator, n - f for only paricipants, yn/x: this means that the member must be divided in x groups and that only the yth participates this phase",
+        "howManyTimes": "And integer if it is static, N for make it repeat a time for each member, can add operations",
+        "maxIdeas": "And integer if is it static, N for each member, can add operations",
+        "minIdeas": "And integer if is it static, N for each member, can add operations",
+        "": ""
+    }
+]
