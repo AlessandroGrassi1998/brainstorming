@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Card, CardContent, Typography, CardActionArea } from '@material-ui/core';
+
+import { API, graphqlOperation } from 'aws-amplify';
+import { listTemplates } from '../../../graphql/queries';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -10,22 +13,23 @@ const useStyles = makeStyles((theme) => ({
 
 const Step2 = (props) => {
     const classes = useStyles();
-    const data = [
-        { title: "635", description: "Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. " },
-        { title: "635", description: "Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. " },
-        { title: "635", description: "Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. " },
-        { title: "635", description: "Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. " },
-        { title: "635", description: "Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. " },
-        { title: "635", description: "Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. Respect forming clothes do in he. Course so piqued no an by appear. Themselves reasonable pianoforte so motionless he as difficulty be. Abode way begin ham there power whole. Do unpleasing indulgence impossible to conviction. Suppose neither evident welcome it at do civilly uncivil. Sing tall much you get nor. " },
-    ]
-    const cards = data.map((card, i) => {
+    const [templates, setTemplates] = useState([]);
+    useEffect(() => {
+        API.graphql(graphqlOperation(listTemplates)).then((templates) => {
+            console.log(JSON.stringify(templates))
+            setTemplates(templates.data.listTemplates.items);
+        }).catch(err => {
+            console.log(err);
+        });
+    }, [])
+    const cards = templates.map((template, i) => {
         return (
-            <Grid item xs={12} md={6} lg={4} key={i}>
+            <Grid item xs={12} md={6} lg={4} key={template.id}>
                 <Card className={classes.card}>
-                    <CardActionArea onClick={() => props.setSelectedModel(i)}>
+                    <CardActionArea onClick={() => props.setSelectedModel(template.id)}>
                         <CardContent>
-                            <Typography variant="h3">{card.title}</Typography>
-                            <Typography variant="body1">{card.description}</Typography>
+                            <Typography variant="h3">{template.name}</Typography>
+                            <Typography variant="body1">{template.description}</Typography>
                         </CardContent>
                     </CardActionArea>
                 </Card>

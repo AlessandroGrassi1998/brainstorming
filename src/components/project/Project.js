@@ -10,18 +10,18 @@ import ParticipantBox from './ParticipantBox';
 import ProjectMainContent from './ProjectMainContent'
 
 import { API, graphqlOperation } from 'aws-amplify';
-import { getProject } from '../../graphql/queries';
+import { getProject, listSessions } from '../../graphql/queries';
 
 const useStyles = makeStyles((theme) => ({
     fabSession: {
         position: 'fixed',
-        bottom: "5%",
+        bottom: "15%",
         right: "18%",
         display: "block",
     },
     fabProgramSession: {
         position: 'fixed',
-        bottom: "15%",
+        bottom: "5%",
         right: "18%",
         display: "block",
     },
@@ -51,19 +51,29 @@ const Project = (props) => {
     const [description, setDescription] = useState("");
     const [sessions, setSessions] = useState([])
     const [members, setMembers] = useState([]);
+    const [startedSession, setStartedSession] = useState(null)
     useEffect(() => {
         API.graphql(graphqlOperation(getProject, { id: projectId })).then((project) => {
-            console.log(JSON.stringify(project))
             setTitle(project.data.getProject.name);
             setDescription(project.data.getProject.description);
             setSessions(project.data.getProject.sessions.items);
             let membersJSON = [
-                                project.data.getProject.owner,
-                                ...project.data.getProject.members
-                                ];
+                project.data.getProject.owner,
+                ...project.data.getProject.members
+            ];
             setMembers(membersJSON);
         });
+        API.graphql(graphqlOperation(listSessions, { filter: { started: { eq: true } } })).then((sessions) => {
+            if (sessions.data.listSessions.items.length > 0) {
+                console.log(sessions.data.listSessions.items[0].id);
+                setStartedSession(sessions.data.listSessions.items[0].id);
+            }
+        });
     }, [])
+
+    const joinSession = () => {
+        history.push(`/home/${projectId}/${startedSession}`)
+    }
 
     return (
         <Box display="flex" flexDirection="column" className={classes.outerBox}>
@@ -78,10 +88,12 @@ const Project = (props) => {
                 </Grid>
             </Box>
 
-            <Fab className={classes.fabSession} onClick={() => history.push("/home/project/session")} color="primary" aria-label="add" variant="extended">
-                <GiFireworkRocket size="25" />
-                Start session
-            </Fab>
+            {startedSession && (
+                <Fab className={classes.fabSession} onClick={joinSession} color="primary" aria-label="add" variant="extended">
+                    <GiFireworkRocket size="25" />
+                Join session
+                </Fab>
+            )}
 
             <Fab className={classes.fabProgramSession} onClick={() => setOpenStart(true)} color="primary" aria-label="add" variant="extended">
                 <GiFireworkRocket size="25" />
@@ -93,7 +105,7 @@ const Project = (props) => {
                 autoDetectWindowHeight={false}
                 autoScrollBodyContent={false}>
                 <DialogContent>
-                    <StartSessionDialog setOpen={setOpenStart} />
+                    <StartSessionDialog setOpen={setOpenStart} members={members} projectId={projectId} />
                 </DialogContent>
             </Dialog>
         </Box >

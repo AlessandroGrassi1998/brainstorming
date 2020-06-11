@@ -14,13 +14,14 @@ export const addMemberToProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -92,13 +93,14 @@ export const createProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -125,13 +127,14 @@ export const updateProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -158,13 +161,14 @@ export const deleteProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -185,10 +189,6 @@ export const createSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -200,9 +200,26 @@ export const createSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
@@ -219,10 +236,6 @@ export const updateSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -234,9 +247,26 @@ export const updateSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
@@ -253,10 +283,6 @@ export const deleteSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -268,12 +294,77 @@ export const deleteSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
+    }
+  }
+`;
+export const createPostit = /* GraphQL */ `
+  mutation CreatePostit(
+    $input: CreatePostitInput!
+    $condition: ModelPostitConditionInput
+  ) {
+    createPostit(input: $input, condition: $condition) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
+    }
+  }
+`;
+export const updatePostit = /* GraphQL */ `
+  mutation UpdatePostit(
+    $input: UpdatePostitInput!
+    $condition: ModelPostitConditionInput
+  ) {
+    updatePostit(input: $input, condition: $condition) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
+    }
+  }
+`;
+export const deletePostit = /* GraphQL */ `
+  mutation DeletePostit(
+    $input: DeletePostitInput!
+    $condition: ModelPostitConditionInput
+  ) {
+    deletePostit(input: $input, condition: $condition) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
     }
   }
 `;

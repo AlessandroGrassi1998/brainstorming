@@ -59,7 +59,6 @@ const Home = (props) => {
     useEffect(() => {
         if (!props.user) {
             Auth.currentAuthenticatedUser().then((user) => {
-                console.log("inside then")
                 props.setUser(user)
             }).catch((err) => {
                 console.log(`error retriving the user. ${err}`)

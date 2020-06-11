@@ -4,6 +4,9 @@ import { Stepper, Step, StepButton, Button, Typography, Container, Box } from '@
 import Step1 from './stepsCreateSession/Step1';
 import Step2 from './stepsCreateSession/Step2';
 import Step3 from './stepsCreateSession/Step3';
+import { useHistory } from "react-router-dom";
+import { API, graphqlOperation } from 'aws-amplify';
+import { createSession } from '../../graphql/mutations';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,8 +39,10 @@ function getSteps() {
 
 
 
-const StartSessionDialog = () => {
+const StartSessionDialog = (props) => {
     const classes = useStyles();
+    const history = useHistory();
+    const {projectId, members} = props;
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
     const [title, setTitle] = useState("");
@@ -117,10 +122,27 @@ const StartSessionDialog = () => {
         handleNext();
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
-        setCompleted({});
+    const handleStartSession = () => {
+        const currentTimeStamp = Date.now();
+        const sessionInput = {
+            topic: title,
+            projectID: projectId,
+            templateId: selectedModel,
+            startingTimestamp: currentTimeStamp,
+            participants: members,
+            projectMembers: members,
+            ideaGenerated: 0,
+            started: true,
+            currentPhase: 1,
+        }
+        API.graphql(graphqlOperation(createSession, { input: sessionInput })).then(session => {
+            console.log(JSON.stringify(session));
+            history.push(`/home/${projectId}/${session.data.createSession.id}`);
+        }).catch(err => {
+            console.log(err);
+        });
     };
+
     let height = 300
     if (activeStep === 0) {
         height = 300
@@ -146,7 +168,7 @@ const StartSessionDialog = () => {
                         <Typography>Title: {title}</Typography>
                         <Typography>Date: {selectedDate.toDateString()}</Typography>
                         <Typography>Selected model: {selectedModel}</Typography>
-                        <Button onClick={handleReset}>Start</Button>
+                        <Button onClick={handleStartSession}>Start</Button>
                     </Box>
                 ) : (
                         <div>

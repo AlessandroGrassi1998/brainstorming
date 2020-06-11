@@ -50,13 +50,14 @@ export const onCreateProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -80,13 +81,14 @@ export const onUpdateProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -110,13 +112,14 @@ export const onDeleteProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -134,10 +137,6 @@ export const onCreateSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -149,9 +148,26 @@ export const onCreateSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
@@ -165,10 +181,6 @@ export const onUpdateSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -180,9 +192,26 @@ export const onUpdateSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
@@ -196,10 +225,6 @@ export const onDeleteSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -211,12 +236,68 @@ export const onDeleteSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
+    }
+  }
+`;
+export const onCreatePostit = /* GraphQL */ `
+  subscription OnCreatePostit($owner: String) {
+    onCreatePostit(owner: $owner) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
+    }
+  }
+`;
+export const onUpdatePostit = /* GraphQL */ `
+  subscription OnUpdatePostit($owner: String, $peapleCanUpdate: String) {
+    onUpdatePostit(owner: $owner, peapleCanUpdate: $peapleCanUpdate) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
+    }
+  }
+`;
+export const onDeletePostit = /* GraphQL */ `
+  subscription OnDeletePostit($owner: String) {
+    onDeletePostit(owner: $owner) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
     }
   }
 `;

@@ -53,13 +53,14 @@ export const getProject = /* GraphQL */ `
           topic
           projectID
           description
+          templateId
+          personalizationsToTemplate
+          rating
           startingTimestamp
           endingTimestamp
           started
           finished
-          personalizationsToTemplate
-          phase
-          rating
+          currentPhase
           ideaGenerated
           participants
           projectMembers
@@ -98,10 +99,6 @@ export const getSession = /* GraphQL */ `
       topic
       projectID
       description
-      startingTimestamp
-      endingTimestamp
-      started
-      finished
       template {
         id
         nPhases
@@ -113,9 +110,26 @@ export const getSession = /* GraphQL */ `
         linkToReference
         phases
       }
+      templateId
       personalizationsToTemplate
-      phase
       rating
+      startingTimestamp
+      endingTimestamp
+      started
+      finished
+      currentPhase
+      ideasGenerated {
+        items {
+          id
+          content
+          peapleCanUpdate
+          peapleCanRead
+          phase
+          sessionID
+          owner
+        }
+        nextToken
+      }
       ideaGenerated
       participants
       projectMembers
@@ -134,10 +148,6 @@ export const listSessions = /* GraphQL */ `
         topic
         projectID
         description
-        startingTimestamp
-        endingTimestamp
-        started
-        finished
         template {
           id
           nPhases
@@ -149,12 +159,53 @@ export const listSessions = /* GraphQL */ `
           linkToReference
           phases
         }
+        templateId
         personalizationsToTemplate
-        phase
         rating
+        startingTimestamp
+        endingTimestamp
+        started
+        finished
+        currentPhase
+        ideasGenerated {
+          nextToken
+        }
         ideaGenerated
         participants
         projectMembers
+      }
+      nextToken
+    }
+  }
+`;
+export const getPostit = /* GraphQL */ `
+  query GetPostit($id: ID!) {
+    getPostit(id: $id) {
+      id
+      content
+      peapleCanUpdate
+      peapleCanRead
+      phase
+      sessionID
+      owner
+    }
+  }
+`;
+export const listPostits = /* GraphQL */ `
+  query ListPostits(
+    $filter: ModelPostitFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostits(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        content
+        peapleCanUpdate
+        peapleCanRead
+        phase
+        sessionID
+        owner
       }
       nextToken
     }
@@ -177,11 +228,19 @@ export const getTemplate = /* GraphQL */ `
 `;
 export const listTemplates = /* GraphQL */ `
   query ListTemplates(
+    $id: ID
     $filter: ModelTemplateFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listTemplates(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listTemplates(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         nPhases

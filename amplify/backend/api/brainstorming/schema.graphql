@@ -35,22 +35,45 @@ type Session
   topic: String!
   projectID: ID!
   description: String
+  template: Template @connection(fields: ["templateId"])
+  templateId: ID!
+  personalizationsToTemplate: AWSJSON #this could be a [String] or [Int] in the future
+  rating: Int
+
   startingTimestamp: AWSTimestamp!
   endingTimestamp: AWSTimestamp
-  started: Boolean
+  started: Boolean!
   finished: Boolean
-  template: Template
-  personalizationsToTemplate: AWSJSON #this could be a [String] or [Int] in the future
-  phase: Int
-  rating: Int
+  currentPhase: Int!
+  ideasGenerated: [Postit] @connection(keyName: "byPostit", fields: ["id"])
+
   ideaGenerated: Int!
   participants: [String!]!
   projectMembers: [String!]!
 }
 
+type Postit
+@model
+@auth(rules: [ {allow: groups, groups: ["Admin"]},
+               {allow: owner, ownerField: "owner"},
+               {allow: owner, ownerField: "peapleCanUpdate", operations: [read, update] },
+               {allow: owner, ownerField: "peapleCanRead", operations: [read]} ])
+@key(name:"byPostit", fields:["sessionID", "phase"])
+{
+  id: ID!
+  content: String!
+  peapleCanUpdate: [String]!
+  peapleCanRead: [String]!
+  phase: Int! #later the resolver must control that the phase is the right one
+  sessionID: ID!
+  owner: String!
+}
+
 type Template
 @model
-@auth(rules: [ {allow: groups, groups: ["Admin"]} ])
+@auth(rules: [ {allow: groups, groups: ["Admin"]},
+               {allow: private, operations: [ read ]} ] )
+@key(fields: ["id"])
 {
   id: ID!
   nPhases: Int!
@@ -67,7 +90,7 @@ input AddMemberToProjectInput {
     id: ID!
     newMembers: [String!]!
 }
-
+ 
 type Mutation {
     addMemberToProject(input: AddMemberToProjectInput!): Project!
 }
