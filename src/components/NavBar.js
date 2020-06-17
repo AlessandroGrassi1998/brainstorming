@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Button, Toolbar, Typography, Icon, Box, IconButton } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors'
-import { connect } from 'react-redux';
 import { TiThMenu } from 'react-icons/ti';
-import { bindActionCreators } from 'redux';
 import { useHistory, useLocation } from "react-router-dom";
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import openLoginModal from '../actions/openLoginModal';
 import openDrawer from '../actions/opnenDrawer'
@@ -34,6 +35,9 @@ const useStyles = makeStyles(theme => ({
             cursor: "pointer",
         }
     },
+    appBar:{
+        zIndex: 1000,
+    },
 }));
 
 const LoggedNav = (props) => {
@@ -60,6 +64,7 @@ const NavBar = (props) => {
     const classes = useStyles();
     const history = useHistory();
     const location = useLocation();
+    const { question } = props;
     const bringBackToLandingPage = () => { history.push("/") };
     const openDrawer = () => { props.openDrawer(true) };
     const [isLogged, setIsLogged] = useState(false);
@@ -82,7 +87,9 @@ const NavBar = (props) => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static"
+            className={classes.appBar}>
+                
                 <Toolbar>
 
                     {menu}
@@ -91,6 +98,7 @@ const NavBar = (props) => {
                             <Icon>lightbulb</Icon>
                             <Typography variant="h6" >Rail note</Typography>
                         </Box>
+                        {question.question}
                         <Box display="flex" alignItems="center">
                             {isLogged ? <LoggedNav setIsLogged={setIsLogged} setUser={props.setUser} user={props.user} classes={classes} history={history} /> : <UnloggedNav classes={classes} setIsLogged={setIsLogged} history={history} />}
                         </Box>
@@ -103,7 +111,8 @@ const NavBar = (props) => {
 
 function mapStateToProps(state) {
     return {
-        user: state.userReducer
+        user: state.userReducer,
+        question: state.questionOnNavbarReducer,
     }
 }
 

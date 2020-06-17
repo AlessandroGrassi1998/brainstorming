@@ -63,7 +63,7 @@ const Project = (props) => {
             ];
             setMembers(membersJSON);
         });
-        API.graphql(graphqlOperation(listSessions, { filter: { started: { eq: true } } })).then((sessions) => {
+        API.graphql(graphqlOperation(listSessions, { filter: { projectID: {eq: projectId},started: { eq: true } } })).then((sessions) => {
             if (sessions.data.listSessions.items.length > 0) {
                 console.log(sessions.data.listSessions.items[0].id);
                 setStartedSession(sessions.data.listSessions.items[0].id);
